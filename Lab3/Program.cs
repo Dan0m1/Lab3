@@ -34,4 +34,6 @@ v4.RemoveLastCoordinate().Display();
 Console.WriteLine("\nAdding new coordinate to v4:");
 v4.AddCoordinate(-14.88).Display();
 
+Console.WriteLine("\nv4 length:\t"+v4.GetLength());
+
 Console.ReadKey();
