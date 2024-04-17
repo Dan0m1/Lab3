@@ -107,4 +107,9 @@ public class Vector
         }
         Console.WriteLine("Vector in tupple: (" + vTupple + ")");
     }
+
+    public Dictionary<int, double> GetCoordinatesDict()
+    {
+        return _coordinates;
+    }
 }
