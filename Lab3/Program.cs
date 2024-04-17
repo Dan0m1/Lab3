@@ -1,26 +1,7 @@
 ﻿using System.Text.Json;
 using Lab3;
 
-string input;
-Dictionary<int, double> coordinatesInput = new Dictionary<int, double>()
-{
-    {0, 0},
-    {1,0},
-    {2,0},
-    {3,0},
-};
-
-using (StreamReader reader = new StreamReader("C:\\Users\\servo\\RiderProjects\\Lab3\\Lab3\\JSON_input.json"))
-{
-    input = reader.ReadToEnd();
-}
-
-if (input != null)
-{
-    coordinatesInput = JsonSerializer.Deserialize<Dictionary<int, double>>(input);
-}
-
-Vector v1 = new Vector(coordinatesInput);
+Vector v1 = GetVectorFromJson("C:\\Users\\servo\\RiderProjects\\Lab3\\Lab3\\JSON_input.json");
 Vector v2 = new Vector(13.0673, -863.33, -2.340, 0.2);
     
     
@@ -49,10 +30,33 @@ v4.AddCoordinate(-14.88).Display();
 
 Console.WriteLine("\nv4 length:\t"+v4.GetLength());
 
-using (StreamWriter writer = new StreamWriter("C:\\Users\\servo\\RiderProjects\\Lab3\\Lab3\\JSON_output.json", false))
-{
-    writer.Write(JsonSerializer.Serialize(v4.GetCoordinatesDict()));
-}
-
+VectorToJson("C:\\Users\\servo\\RiderProjects\\Lab3\\Lab3\\JSON_output.json", v4);
 
 Console.ReadKey();
+
+
+
+Vector GetVectorFromJson(string path)
+{
+    string input;
+    using (StreamReader reader = new StreamReader("C:\\Users\\servo\\RiderProjects\\Lab3\\Lab3\\JSON_input.json"))
+    {
+        input = reader.ReadToEnd();
+    }
+
+    if (input == null)
+    {
+        Console.WriteLine("JSON file is empty. Returning null-vector");
+        return new Vector(new Dictionary<int, double>(){{0, 0}, {1,0}});
+    }
+
+    return new Vector(JsonSerializer.Deserialize<Dictionary<int, double>>(input));
+}
+
+void VectorToJson(string path, Vector v)
+{
+    using (StreamWriter writer = new StreamWriter(path, false))
+    {
+        writer.Write(JsonSerializer.Serialize(v.GetCoordinatesDict()));
+    }
+}
